@@ -1,13 +1,257 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>002.uz</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daler & Mirzo — AI Masters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0A0A;
+    --panel:#141414;
+    --line:#262626;
+    --text:#F7F5F2;
+    --muted:#8A8A8A;
+    --accent:#FF2E4C;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Bebas Neue', sans-serif;
+    font-weight:400;
+    letter-spacing:0.5px;
+    line-height:0.95;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+
+  /* HEADER */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,10,10,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 32px;
+    max-width:1180px; margin:0 auto;
+  }
+  .logo{font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px;}
+  .logo span{color:var(--accent);}
+  .nav-links{display:flex; gap:36px; font-size:15px; font-weight:500;}
+  .nav-links a{color:var(--muted); transition:color .2s;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{
+    background:var(--accent); color:#0A0A0A; font-weight:700;
+    padding:10px 22px; border-radius:2px; font-size:14px;
+  }
+  .burger{display:none;}
+
+  /* HERO */
+  .hero{
+    position:relative;
+    padding:120px 32px 100px;
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .hero-inner{
+    max-width:1180px; margin:0 auto;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:60px; align-items:center;
+  }
+  .eyebrow{
+    color:var(--accent); font-weight:600; font-size:14px;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(56px, 8vw, 96px);
+    margin-bottom:24px;
+  }
+  .hero p{
+    color:var(--muted); font-size:18px; max-width:480px; margin-bottom:36px;
+  }
+  .btn-row{display:flex; gap:16px; flex-wrap:wrap;}
+  .btn{
+    display:inline-block; padding:16px 32px; font-weight:700; font-size:15px;
+    border-radius:2px; transition:transform .15s, background .15s;
+  }
+  .btn-primary{background:var(--accent); color:#0A0A0A;}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{border:1px solid var(--line); color:var(--text);}
+  .btn-ghost:hover{border-color:var(--text);}
+  .hero-visual{
+    position:relative; aspect-ratio:4/5; border-radius:2px; overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .hero-visual img{width:100%; height:100%; object-fit:cover; filter:grayscale(15%) contrast(1.05);}
+  .hero-visual::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(10,10,10,0) 40%, rgba(10,10,10,0.85) 100%);
+  }
+  .hero-tag{
+    position:absolute; bottom:20px; left:20px; z-index:2;
+    font-size:13px; color:var(--muted);
+  }
+
+  /* SECTION LABEL */
+  .section{padding:110px 0; border-bottom:1px solid var(--line);}
+  .section-head{max-width:640px; margin-bottom:64px;}
+  .section-head .eyebrow{margin-bottom:14px;}
+  .section-head h2{font-size:clamp(38px,5vw,56px);}
+  .section-head p{color:var(--muted); font-size:17px; margin-top:16px;}
+
+  /* SERVICES */
+  .services{display:grid; grid-template-columns:repeat(2, 1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .service{
+    background:var(--bg); padding:44px 40px; transition:background .2s;
+  }
+  .service:hover{background:var(--panel);}
+  .service h3{font-size:28px; margin-bottom:14px; letter-spacing:0.3px;}
+  .service p{color:var(--muted); font-size:15px;}
+
+  /* ABOUT */
+  .about-grid{
+    display:grid; grid-template-columns:0.85fr 1.15fr; gap:70px; align-items:center;
+  }
+  .about-photo{
+    border:1px solid var(--line); border-radius:2px; overflow:hidden; aspect-ratio:3/4;
+  }
+  .about-photo img{width:100%; height:100%; object-fit:cover; filter:grayscale(20%);}
+  .about-text h2{font-size:clamp(34px,4.5vw,48px); margin-bottom:24px;}
+  .about-text p{color:var(--muted); font-size:17px; margin-bottom:18px; max-width:520px;}
+  .about-text p strong{color:var(--text); font-weight:600;}
+
+  /* CONTACT */
+  .contact{
+    text-align:center; padding:130px 32px;
+  }
+  .contact h2{font-size:clamp(48px,7vw,80px); margin-bottom:20px;}
+  .contact p{color:var(--muted); font-size:18px; margin-bottom:44px;}
+  .contact-links{display:flex; justify-content:center; gap:18px; flex-wrap:wrap;}
+
+  footer{
+    padding:36px 32px; text-align:center; color:var(--muted); font-size:13px;
+    border-top:1px solid var(--line);
+  }
+
+  @media (max-width:860px){
+    .nav-links{display:none;}
+    .hero-inner{grid-template-columns:1fr;}
+    .hero-visual{order:-1; aspect-ratio:16/10;}
+    .about-grid{grid-template-columns:1fr;}
+    .about-photo{max-width:320px; margin:0 auto;}
+    .services{grid-template-columns:1fr;}
+  }
+</style>
 </head>
 <body>
-    <h1>Мои соцсети</h1>
-    <img src="photo_2026-08-17_12-18-24.jpg" alt="Фото" width="400">
-    <p><a href="https://instagram.com/mirzouzs" target="_blank">Instagram</a></p>
-    <p><a href="https://t.me/uz_73" target="_blank">Telegram</a></p>
+
+<header>
+  <div class="nav">
+    <div class="logo">DALER&MIRZO<span>.</span></div>
+    <div class="nav-links">
+      <a href="#services">Услуги</a>
+      <a href="#about">О нас</a>
+      <a href="#contact">Контакты</a>
+    </div>
+    <a class="nav-cta" href="https://t.me/uz_73" target="_blank">Написать</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">AI MASTERS · VIDEO STUDIO</div>
+      <h1>Видео,<br>которое<br>создаёт ИИ.</h1>
+      <p>Мы снимаем эмоции, а нейросети превращают их в кино. Свадьбы, истории любви и видео для бизнеса — без съёмочной группы и лишних недель ожидания.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="#contact">Обсудить проект</a>
+        <a class="btn btn-ghost" href="#services">Смотреть услуги</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img src="photo_2026-08-17_12-18-24.jpg" alt="Daler & Mirzo">
+      <div class="hero-tag">Daler & Mirzo — Ташкент</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">ЧТО МЫ ДЕЛАЕМ</div>
+      <h2>Пять способов рассказать вашу историю</h2>
+      <p>Каждый проект — это сценарий, ИИ-монтаж и ручная доводка, пока результат не станет идеальным.</p>
+    </div>
+    <div class="services">
+      <div class="service">
+        <h3>Свадебное видео</h3>
+        <p>Эмоциональный фильм о вашем дне — от первых сборов до последнего танца, собранный и усиленный нейросетями.</p>
+      </div>
+      <div class="service">
+        <h3>История нашей встречи</h3>
+        <p>Превращаем рассказ пары в кинематографичный ролик: как познакомились, первое свидание, путь друг к другу.</p>
+      </div>
+      <div class="service">
+        <h3>Видео для бизнеса</h3>
+        <p>Рекламные и продающие ролики: презентация продукта, отзывы клиентов, имиджевые видео для соцсетей.</p>
+      </div>
+      <div class="service">
+        <h3>Цифровые аватары</h3>
+        <p>Ваш ИИ-двойник для презентаций, курсов и контента — говорит вашим голосом, работает без выходных.</p>
+      </div>
+      <div class="service">
+        <h3>Контент для соцсетей</h3>
+        <p>Регулярные короткие ролики для Instagram и Telegram — без камеры, света и съёмочного дня.</p>
+      </div>
+      <div class="service">
+        <h3>Озвучка и субтитры</h3>
+        <p>ИИ-озвучка на нескольких языках и точные субтитры — чтобы видео понимали в любой точке мира.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-photo">
+        <img src="photo_2026-08-17_12-18-24.jpg" alt="О нас">
+      </div>
+      <div class="about-text">
+        <div class="eyebrow">О НАС</div>
+        <h2>Мы вдвоём делаем то, на что раньше уходила команда.</h2>
+        <p><strong>Daler & Mirzo</strong> — студия, где сценарий, монтаж и графику делает ИИ, а результат проверяем и дорабатываем мы сами.</p>
+        <p>Каждый проект проходит через нас лично: мы не отдаём заказы на аутсорс и не собираем видео по шаблону — каждая история собирается заново, под конкретных людей.</p>
+        <p>Если у вас есть история, которую стоит рассказать — мы найдём, как показать её красиво.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="eyebrow">ГОТОВЫ НАЧАТЬ?</div>
+  <h2>Расскажите нам<br>свою историю.</h2>
+  <p>Напишите в Telegram или Instagram — ответим в течение дня.</p>
+  <div class="contact-links">
+    <a class="btn btn-primary" href="https://t.me/uz_73" target="_blank">Telegram</a>
+    <a class="btn btn-ghost" href="https://instagram.com/mirzouzs" target="_blank">Instagram</a>
+  </div>
+</section>
+
+<footer>
+  © 2026 Daler & Mirzo AI Masters · 002.uz
+</footer>
+
 </body>
 </html>
