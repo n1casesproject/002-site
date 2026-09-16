@@ -1,257 +1,266 @@
 <!DOCTYPE html>
 <html lang="ru">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+<head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Daler & Mirzo — AI Masters</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0A0A0A;
-    --panel:#141414;
-    --line:#262626;
-    --text:#F7F5F2;
-    --muted:#8A8A8A;
-    --accent:#FF2E4C;
+    --bg:#000;
+    --text:#F5F5F3;
+    --muted:#8a8a8a;
+    --line:rgba(255,255,255,0.14);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
   body{
-    background:var(--bg);
-    color:var(--text);
+    background:var(--bg); color:var(--text);
     font-family:'Inter', sans-serif;
-    line-height:1.6;
     overflow-x:hidden;
-  }
-  h1,h2,h3,.display{
-    font-family:'Bebas Neue', sans-serif;
-    font-weight:400;
-    letter-spacing:0.5px;
-    line-height:0.95;
+    cursor:none;
   }
   a{color:inherit; text-decoration:none;}
   img{max-width:100%; display:block;}
-  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  .disp{font-family:'Archivo Black', sans-serif; text-transform:uppercase; line-height:0.92; letter-spacing:-0.02em;}
 
-  /* HEADER */
+  /* grain overlay */
+  .grain{
+    position:fixed; inset:-50%; width:200%; height:200%; z-index:999; pointer-events:none;
+    opacity:0.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 1s steps(4) infinite;
+  }
+  @keyframes grain{
+    0%,100%{transform:translate(0,0);} 25%{transform:translate(-2%,1%);}
+    50%{transform:translate(1%,-2%);} 75%{transform:translate(-1%,2%);}
+  }
+
+  /* custom cursor */
+  .cursor{
+    position:fixed; top:0; left:0; width:16px; height:16px; border-radius:50%;
+    background:#fff; z-index:1000; pointer-events:none;
+    transform:translate(-50%,-50%);
+    transition:width .25s, height .25s, background .25s, opacity .25s;
+    mix-blend-mode:difference;
+  }
+  .cursor.big{width:64px; height:64px;}
+  @media (pointer:coarse){ .cursor,.grain{display:none;} body{cursor:auto;} }
+
+  /* nav */
   header{
-    position:sticky; top:0; z-index:50;
-    background:rgba(10,10,10,0.85);
-    backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
+    position:fixed; top:0; left:0; right:0; z-index:60;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:28px 40px; mix-blend-mode:difference;
   }
-  .nav{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:20px 32px;
-    max-width:1180px; margin:0 auto;
-  }
-  .logo{font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px;}
-  .logo span{color:var(--accent);}
-  .nav-links{display:flex; gap:36px; font-size:15px; font-weight:500;}
-  .nav-links a{color:var(--muted); transition:color .2s;}
-  .nav-links a:hover{color:var(--text);}
-  .nav-cta{
-    background:var(--accent); color:#0A0A0A; font-weight:700;
-    padding:10px 22px; border-radius:2px; font-size:14px;
-  }
-  .burger{display:none;}
+  .logo{font-family:'Archivo Black', sans-serif; font-size:18px; letter-spacing:0.02em;}
+  nav{display:flex; gap:34px; font-size:13px; text-transform:uppercase; letter-spacing:0.1em;}
+  nav a{opacity:0.8; transition:opacity .2s;}
+  nav a:hover{opacity:1;}
 
-  /* HERO */
+  /* hero */
   .hero{
-    position:relative;
-    padding:120px 32px 100px;
-    border-bottom:1px solid var(--line);
-    overflow:hidden;
+    min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+    padding:0 40px; position:relative;
   }
-  .hero-inner{
-    max-width:1180px; margin:0 auto;
-    display:grid; grid-template-columns:1.1fr 0.9fr; gap:60px; align-items:center;
-  }
-  .eyebrow{
-    color:var(--accent); font-weight:600; font-size:14px;
-    margin-bottom:18px;
+  .hero .kicker{
+    font-size:13px; letter-spacing:0.25em; text-transform:uppercase; color:var(--muted);
+    margin-bottom:28px;
   }
   .hero h1{
-    font-size:clamp(56px, 8vw, 96px);
-    margin-bottom:24px;
+    font-size:clamp(48px, 10vw, 150px);
   }
-  .hero p{
-    color:var(--muted); font-size:18px; max-width:480px; margin-bottom:36px;
+  .hero .sub{
+    max-width:520px; margin-top:32px; color:var(--muted); font-size:17px;
   }
-  .btn-row{display:flex; gap:16px; flex-wrap:wrap;}
-  .btn{
-    display:inline-block; padding:16px 32px; font-weight:700; font-size:15px;
-    border-radius:2px; transition:transform .15s, background .15s;
+  .scroll-hint{
+    position:absolute; bottom:40px; left:40px; font-size:12px; letter-spacing:0.15em;
+    text-transform:uppercase; color:var(--muted);
+    display:flex; align-items:center; gap:10px;
   }
-  .btn-primary{background:var(--accent); color:#0A0A0A;}
-  .btn-primary:hover{transform:translateY(-2px);}
-  .btn-ghost{border:1px solid var(--line); color:var(--text);}
-  .btn-ghost:hover{border-color:var(--text);}
-  .hero-visual{
-    position:relative; aspect-ratio:4/5; border-radius:2px; overflow:hidden;
+  .scroll-hint::before{
+    content:""; width:1px; height:40px; background:var(--muted);
+    animation:scrolldown 1.6s infinite;
+  }
+  @keyframes scrolldown{
+    0%{transform:scaleY(0); transform-origin:top;}
+    50%{transform:scaleY(1); transform-origin:top;}
+    50.01%{transform-origin:bottom;}
+    100%{transform:scaleY(0); transform-origin:bottom;}
+  }
+
+  /* marquee */
+  .marquee-wrap{
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    overflow:hidden; padding:22px 0;
+  }
+  .marquee{
+    display:flex; white-space:nowrap; width:max-content;
+    animation:marquee 22s linear infinite;
+  }
+  .marquee span{
+    font-family:'Archivo Black', sans-serif; text-transform:uppercase;
+    font-size:34px; padding:0 30px; color:var(--text); display:flex; align-items:center; gap:30px;
+  }
+  .marquee span::after{content:"—"; color:var(--muted);}
+  @keyframes marquee{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* reveal */
+  .reveal{opacity:0; transform:translateY(40px); transition:opacity .8s ease, transform .8s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* work grid */
+  .work{padding:140px 40px;}
+  .work-head{max-width:600px; margin-bottom:70px;}
+  .work-head .kicker{font-size:13px; letter-spacing:0.25em; text-transform:uppercase; color:var(--muted); margin-bottom:20px;}
+  .work-head h2{font-size:clamp(34px,5vw,58px);}
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:2px;}
+  .tile{
+    position:relative; aspect-ratio:4/3; overflow:hidden; background:#111;
     border:1px solid var(--line);
   }
-  .hero-visual img{width:100%; height:100%; object-fit:cover; filter:grayscale(15%) contrast(1.05);}
-  .hero-visual::after{
-    content:""; position:absolute; inset:0;
-    background:linear-gradient(180deg, rgba(10,10,10,0) 40%, rgba(10,10,10,0.85) 100%);
+  .tile img{width:100%; height:100%; object-fit:cover; filter:grayscale(40%) contrast(1.1); transition:transform .6s ease, filter .6s ease;}
+  .tile:hover img{transform:scale(1.06); filter:grayscale(0%) contrast(1.1);}
+  .tile-label{
+    position:absolute; left:0; bottom:0; right:0; padding:24px;
+    background:linear-gradient(0deg, rgba(0,0,0,0.85), transparent);
   }
-  .hero-tag{
-    position:absolute; bottom:20px; left:20px; z-index:2;
-    font-size:13px; color:var(--muted);
-  }
+  .tile-label .n{font-size:12px; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase;}
+  .tile-label h3{font-family:'Archivo Black', sans-serif; text-transform:uppercase; font-size:24px; margin-top:6px;}
 
-  /* SECTION LABEL */
-  .section{padding:110px 0; border-bottom:1px solid var(--line);}
-  .section-head{max-width:640px; margin-bottom:64px;}
-  .section-head .eyebrow{margin-bottom:14px;}
-  .section-head h2{font-size:clamp(38px,5vw,56px);}
-  .section-head p{color:var(--muted); font-size:17px; margin-top:16px;}
+  /* about */
+  .about{padding:140px 40px; border-top:1px solid var(--line);}
+  .about-grid{display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;}
+  .about-photo{aspect-ratio:3/4; overflow:hidden; border:1px solid var(--line);}
+  .about-photo img{width:100%; height:100%; object-fit:cover; filter:grayscale(30%);}
+  .about h2{font-size:clamp(30px,4vw,46px); margin-bottom:26px;}
+  .about p{color:var(--muted); font-size:17px; max-width:480px; margin-bottom:16px;}
+  .about p strong{color:var(--text);}
 
-  /* SERVICES */
-  .services{display:grid; grid-template-columns:repeat(2, 1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
-  .service{
-    background:var(--bg); padding:44px 40px; transition:background .2s;
-  }
-  .service:hover{background:var(--panel);}
-  .service h3{font-size:28px; margin-bottom:14px; letter-spacing:0.3px;}
-  .service p{color:var(--muted); font-size:15px;}
-
-  /* ABOUT */
-  .about-grid{
-    display:grid; grid-template-columns:0.85fr 1.15fr; gap:70px; align-items:center;
-  }
-  .about-photo{
-    border:1px solid var(--line); border-radius:2px; overflow:hidden; aspect-ratio:3/4;
-  }
-  .about-photo img{width:100%; height:100%; object-fit:cover; filter:grayscale(20%);}
-  .about-text h2{font-size:clamp(34px,4.5vw,48px); margin-bottom:24px;}
-  .about-text p{color:var(--muted); font-size:17px; margin-bottom:18px; max-width:520px;}
-  .about-text p strong{color:var(--text); font-weight:600;}
-
-  /* CONTACT */
+  /* contact */
   .contact{
-    text-align:center; padding:130px 32px;
+    padding:180px 40px 140px; text-align:center; border-top:1px solid var(--line);
   }
-  .contact h2{font-size:clamp(48px,7vw,80px); margin-bottom:20px;}
-  .contact p{color:var(--muted); font-size:18px; margin-bottom:44px;}
-  .contact-links{display:flex; justify-content:center; gap:18px; flex-wrap:wrap;}
+  .contact .kicker{font-size:13px; letter-spacing:0.25em; text-transform:uppercase; color:var(--muted); margin-bottom:26px;}
+  .contact h2{font-size:clamp(46px,9vw,120px);}
+  .contact-links{display:flex; justify-content:center; gap:40px; margin-top:50px; flex-wrap:wrap;}
+  .contact-links a{
+    font-size:15px; text-transform:uppercase; letter-spacing:0.1em;
+    border-bottom:1px solid var(--text); padding-bottom:4px;
+  }
 
   footer{
-    padding:36px 32px; text-align:center; color:var(--muted); font-size:13px;
-    border-top:1px solid var(--line);
+    padding:34px 40px; display:flex; justify-content:space-between;
+    font-size:12px; color:var(--muted); border-top:1px solid var(--line);
   }
 
-  @media (max-width:860px){
-    .nav-links{display:none;}
-    .hero-inner{grid-template-columns:1fr;}
-    .hero-visual{order:-1; aspect-ratio:16/10;}
+  @media (max-width:820px){
+    header{padding:22px 24px;}
+    nav{display:none;}
+    .grid{grid-template-columns:1fr;}
     .about-grid{grid-template-columns:1fr;}
-    .about-photo{max-width:320px; margin:0 auto;}
-    .services{grid-template-columns:1fr;}
+    .work,.about,.contact{padding-left:24px; padding-right:24px;}
   }
 </style>
 </head>
 <body>
 
+<div class="grain"></div>
+<div class="cursor" id="cursor"></div>
+
 <header>
-  <div class="nav">
-    <div class="logo">DALER&MIRZO<span>.</span></div>
-    <div class="nav-links">
-      <a href="#services">Услуги</a>
-      <a href="#about">О нас</a>
-      <a href="#contact">Контакты</a>
-    </div>
-    <a class="nav-cta" href="https://t.me/uz_73" target="_blank">Написать</a>
-  </div>
+  <div class="logo">DALER&nbsp;&amp;&nbsp;MIRZO</div>
+  <nav>
+    <a href="#work" class="hoverable">Работы</a>
+    <a href="#about" class="hoverable">О нас</a>
+    <a href="#contact" class="hoverable">Контакты</a>
+  </nav>
 </header>
 
 <section class="hero">
-  <div class="hero-inner">
-    <div>
-      <div class="eyebrow">AI MASTERS · VIDEO STUDIO</div>
-      <h1>Видео,<br>которое<br>создаёт ИИ.</h1>
-      <p>Мы снимаем эмоции, а нейросети превращают их в кино. Свадьбы, истории любви и видео для бизнеса — без съёмочной группы и лишних недель ожидания.</p>
-      <div class="btn-row">
-        <a class="btn btn-primary" href="#contact">Обсудить проект</a>
-        <a class="btn btn-ghost" href="#services">Смотреть услуги</a>
-      </div>
+  <div class="kicker">AI Video Studio · Ташкент</div>
+  <h1 class="disp">Видео<br>из будущего.<br>Снято сегодня.</h1>
+  <p class="sub">Мы соединяем режиссуру и искусственный интеллект — свадьбы, личные истории и видео для бизнеса, которые выглядят как кино.</p>
+  <div class="scroll-hint">Листайте</div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span>AI VIDEO</span><span>СВАДЬБЫ</span><span>ИСТОРИИ ЛЮБВИ</span><span>БИЗНЕС</span><span>AI VIDEO</span><span>СВАДЬБЫ</span><span>ИСТОРИИ ЛЮБВИ</span><span>БИЗНЕС</span>
+  </div>
+</div>
+
+<section class="work" id="work">
+  <div class="work-head reveal">
+    <div class="kicker">Услуги</div>
+    <h2 class="disp">Что мы создаём</h2>
+  </div>
+  <div class="grid">
+    <div class="tile reveal hoverable">
+      <img src="photo_2026-08-17_12-18-24.jpg" alt="Свадебное видео">
+      <div class="tile-label"><div class="n">01 — Свадьбы</div><h3>Свадебное видео</h3></div>
     </div>
-    <div class="hero-visual">
+    <div class="tile reveal hoverable">
+      <img src="photo_2026-08-17_12-18-24.jpg" alt="История встречи">
+      <div class="tile-label"><div class="n">02 — Истории</div><h3>Как вы встретились</h3></div>
+    </div>
+    <div class="tile reveal hoverable">
+      <img src="photo_2026-08-17_12-18-24.jpg" alt="Видео для бизнеса">
+      <div class="tile-label"><div class="n">03 — Бизнес</div><h3>Видео для бизнеса</h3></div>
+    </div>
+    <div class="tile reveal hoverable">
+      <img src="photo_2026-08-17_12-18-24.jpg" alt="Цифровые аватары">
+      <div class="tile-label"><div class="n">04 — Аватары</div><h3>Цифровой двойник</h3></div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-photo reveal">
       <img src="photo_2026-08-17_12-18-24.jpg" alt="Daler & Mirzo">
-      <div class="hero-tag">Daler & Mirzo — Ташкент</div>
     </div>
-  </div>
-</section>
-
-<section class="section" id="services">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="eyebrow">ЧТО МЫ ДЕЛАЕМ</div>
-      <h2>Пять способов рассказать вашу историю</h2>
-      <p>Каждый проект — это сценарий, ИИ-монтаж и ручная доводка, пока результат не станет идеальным.</p>
-    </div>
-    <div class="services">
-      <div class="service">
-        <h3>Свадебное видео</h3>
-        <p>Эмоциональный фильм о вашем дне — от первых сборов до последнего танца, собранный и усиленный нейросетями.</p>
-      </div>
-      <div class="service">
-        <h3>История нашей встречи</h3>
-        <p>Превращаем рассказ пары в кинематографичный ролик: как познакомились, первое свидание, путь друг к другу.</p>
-      </div>
-      <div class="service">
-        <h3>Видео для бизнеса</h3>
-        <p>Рекламные и продающие ролики: презентация продукта, отзывы клиентов, имиджевые видео для соцсетей.</p>
-      </div>
-      <div class="service">
-        <h3>Цифровые аватары</h3>
-        <p>Ваш ИИ-двойник для презентаций, курсов и контента — говорит вашим голосом, работает без выходных.</p>
-      </div>
-      <div class="service">
-        <h3>Контент для соцсетей</h3>
-        <p>Регулярные короткие ролики для Instagram и Telegram — без камеры, света и съёмочного дня.</p>
-      </div>
-      <div class="service">
-        <h3>Озвучка и субтитры</h3>
-        <p>ИИ-озвучка на нескольких языках и точные субтитры — чтобы видео понимали в любой точке мира.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="about">
-  <div class="wrap">
-    <div class="about-grid">
-      <div class="about-photo">
-        <img src="photo_2026-08-17_12-18-24.jpg" alt="О нас">
-      </div>
-      <div class="about-text">
-        <div class="eyebrow">О НАС</div>
-        <h2>Мы вдвоём делаем то, на что раньше уходила команда.</h2>
-        <p><strong>Daler & Mirzo</strong> — студия, где сценарий, монтаж и графику делает ИИ, а результат проверяем и дорабатываем мы сами.</p>
-        <p>Каждый проект проходит через нас лично: мы не отдаём заказы на аутсорс и не собираем видео по шаблону — каждая история собирается заново, под конкретных людей.</p>
-        <p>Если у вас есть история, которую стоит рассказать — мы найдём, как показать её красиво.</p>
-      </div>
+    <div class="reveal">
+      <div class="kicker">О нас</div>
+      <h2 class="disp">Два человека.<br>Один процесс.</h2>
+      <p><strong>Daler & Mirzo</strong> — студия, где сценарий, монтаж и графику делает ИИ, а результат проверяем и дорабатываем мы сами, лично.</p>
+      <p>Каждый проект собирается заново под конкретных людей — без шаблонов и конвейера.</p>
     </div>
   </div>
 </section>
 
 <section class="contact" id="contact">
-  <div class="eyebrow">ГОТОВЫ НАЧАТЬ?</div>
-  <h2>Расскажите нам<br>свою историю.</h2>
-  <p>Напишите в Telegram или Instagram — ответим в течение дня.</p>
+  <div class="kicker">Есть история?</div>
+  <h2 class="disp">Расскажите<br>нам о ней.</h2>
   <div class="contact-links">
-    <a class="btn btn-primary" href="https://t.me/uz_73" target="_blank">Telegram</a>
-    <a class="btn btn-ghost" href="https://instagram.com/mirzouzs" target="_blank">Instagram</a>
+    <a href="https://t.me/uz_73" target="_blank" class="hoverable">Telegram</a>
+    <a href="https://instagram.com/mirzouzs" target="_blank" class="hoverable">Instagram</a>
   </div>
 </section>
 
 <footer>
-  © 2026 Daler & Mirzo AI Masters · 002.uz
+  <div>© 2026 Daler & Mirzo</div>
+  <div>002.uz</div>
 </footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  window.addEventListener('mousemove', e=>{
+    cursor.style.left = e.clientX+'px';
+    cursor.style.top = e.clientY+'px';
+  });
+  document.querySelectorAll('.hoverable').forEach(el=>{
+    el.addEventListener('mouseenter', ()=>cursor.classList.add('big'));
+    el.addEventListener('mouseleave', ()=>cursor.classList.remove('big'));
+  });
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
 
 </body>
 </html>
