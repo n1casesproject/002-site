@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>002.uz</title>
+</head>
+<body>
+    <h1>Мои соцсети</h1>
+    <img src="photo_2026-08-17_12-18-24.jpg" alt="Фото" width="400">
+    <p><a href="https://instagram.com/mirzouzs" target="_blank">Instagram</a></p>
+    <p><a href="https://t.me/uz_73" target="_blank">Telegram</a></p>
+</body>
+</html>
