@@ -41,7 +41,7 @@ cat > /var/www/md-site/index.html <<'LANDING_EOF'
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script>try{var _t=localStorage.getItem('md_theme');if(_t==='light')document.documentElement.setAttribute('data-theme','light');var _l=localStorage.getItem('md_lang');if(_l==='uz'||_l==='en')document.documentElement.lang=_l}catch(e){}</script>
 <style>
 :root{
@@ -193,10 +193,115 @@ html[data-theme=light] .mbox,html[data-theme=light] .dbox{background:#fff;border
 html[data-theme=light] .mbox input,html[data-theme=light] .mbox textarea{background:#f2f9ff;border-color:rgba(11,27,43,.16);color:var(--text)}
 html[data-theme=light] .mbox .x{color:var(--mute)}
 @media (max-width:760px){.hr{gap:6px}.cb{padding:8px 10px;font-size:10px}.tb{width:34px;height:34px}.logoimg{height:32px}header{padding:16px 12px}nav{gap:6px}}
+
+/* ===== Liquid Glass (стиль iOS) ===== */
+:root{
+  --font-d:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Inter',system-ui,'Segoe UI',sans-serif;
+  --font-m:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter',system-ui,'Segoe UI',sans-serif;
+  --font-b:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter',system-ui,'Segoe UI',sans-serif;
+  --g-bg:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.05) 45%,rgba(255,255,255,.10));
+  --g-bd:rgba(255,255,255,.22);
+  --g-sh:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -1px 0 rgba(255,255,255,.08),inset 1px 0 0 rgba(255,255,255,.12),inset -1px 0 0 rgba(255,255,255,.12),0 10px 34px rgba(0,0,0,.45);
+  --g-blur:blur(22px) saturate(185%);
+}
+html[data-theme=light]{
+  --g-bg:linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.36) 50%,rgba(255,255,255,.6));
+  --g-bd:rgba(255,255,255,.85);
+  --g-sh:inset 0 1px 0 rgba(255,255,255,1),inset 0 -1px 0 rgba(10,132,214,.1),0 10px 34px rgba(10,100,170,.22);
+}
+.glow{background:radial-gradient(46% 42% at 72% 42%,rgba(40,140,255,.30),transparent 70%),radial-gradient(40% 40% at 88% 85%,rgba(150,90,255,.20),transparent 70%),radial-gradient(38% 40% at 8% 90%,rgba(40,200,255,.16),transparent 70%)}
+html[data-theme=light] .glow{background:radial-gradient(46% 42% at 72% 42%,rgba(40,150,255,.30),transparent 70%),radial-gradient(40% 40% at 88% 85%,rgba(120,200,255,.35),transparent 70%),radial-gradient(38% 40% at 8% 90%,rgba(255,255,255,.7),transparent 70%)}
+h1{font-weight:700;letter-spacing:-.045em;line-height:.9}
+.logo,.card h3,.mbox h2,.dside h2,.cta,.marq div{font-weight:600;letter-spacing:-.01em}
+.card h3{font-weight:700;letter-spacing:-.02em}
+.tag,.card p,.card .n,.dn,.mbox label,.contacts,.hint,nav a,.cb{font-weight:500;letter-spacing:.04em}
+/* кнопки/пилюли */
+nav a,.cb,.cta.alt{background:var(--g-bg);border:1px solid var(--g-bd);box-shadow:var(--g-sh);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);color:var(--text)}
+html[data-theme=light] nav a,html[data-theme=light] .cb,html[data-theme=light] .cta.alt{background:var(--g-bg);border-color:var(--g-bd)}
+nav a:hover,.cb:hover,.cta.alt:hover{filter:brightness(1.18);transform:translateY(-1px)}
+nav a,.cb{box-shadow:var(--g-sh);padding:10px 16px}
+.tb{padding:0}
+.cta{background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.72));color:#0b1b2b;border:1px solid rgba(255,255,255,.9);box-shadow:inset 0 1px 0 #fff,inset 0 -2px 6px rgba(255,255,255,.35),0 12px 36px rgba(120,180,255,.35);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur)}
+.cta:hover{background:linear-gradient(180deg,#fff,rgba(255,255,255,.85));transform:translateY(-2px)}
+html[data-theme=light] .cta{background:linear-gradient(180deg,rgba(60,170,255,.95),rgba(10,120,215,.92));color:#fff;border-color:rgba(255,255,255,.7);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -2px 8px rgba(0,60,140,.25),0 12px 34px rgba(10,132,214,.42)}
+html[data-theme=light] .cta:hover{background:linear-gradient(180deg,rgba(80,185,255,1),rgba(10,130,225,.95));box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 16px 42px rgba(10,132,214,.5)}
+/* меню языка */
+.lm{background:var(--g-bg),rgba(20,24,34,.55);border:1px solid var(--g-bd);box-shadow:var(--g-sh);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);border-radius:20px}
+html[data-theme=light] .lm{background:var(--g-bg),rgba(255,255,255,.5);border-color:var(--g-bd)}
+.lm button{border-radius:14px}
+/* карточки колеса */
+.card{border-radius:26px;border:1px solid rgba(255,255,255,.28);background:linear-gradient(150deg,rgba(255,255,255,.26),rgba(255,255,255,.07) 42%,rgba(255,255,255,.14)),linear-gradient(160deg,var(--c1),var(--c2));box-shadow:inset 0 1.5px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(255,255,255,.1),inset 1px 0 0 rgba(255,255,255,.14),0 24px 60px rgba(0,0,0,.5)}
+.card::before{background:radial-gradient(120% 60% at 20% -10%,rgba(255,255,255,.35),transparent 60%);mix-blend-mode:normal;opacity:.7}
+html[data-theme=light] .card:not(.hasm){background:linear-gradient(150deg,rgba(255,255,255,.95),rgba(255,255,255,.45) 45%,rgba(205,230,250,.7));border-color:rgba(255,255,255,.95);box-shadow:inset 0 1.5px 0 #fff,inset 0 -1px 0 rgba(10,132,214,.12),0 22px 50px rgba(10,100,170,.28)}
+html[data-theme=light] .card:not(.hasm)::before{display:block;background:radial-gradient(120% 60% at 20% -10%,rgba(255,255,255,.9),transparent 60%);opacity:.8}
+.card .ico,.card .play{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.5);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.card h3{text-transform:none}
+/* бегущая строка — плавающая стеклянная капсула */
+.marq{left:12px;right:12px;bottom:12px;border-radius:999px;border:1px solid var(--g-bd);background:var(--g-bg),rgba(18,22,32,.35);box-shadow:var(--g-sh);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);padding:13px 0}
+html[data-theme=light] .marq{background:var(--g-bg),rgba(255,255,255,.35);border-color:var(--g-bd)}
+.hero{bottom:clamp(100px,15vh,160px)}
+/* окна */
+.modal{background:rgba(0,0,0,.38);-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%)}
+html[data-theme=light] .modal{background:rgba(220,236,252,.38)}
+.mbox,.dbox{background:var(--g-bg),rgba(24,28,40,.5);border:1px solid var(--g-bd);border-radius:32px;box-shadow:var(--g-sh),0 40px 100px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(34px) saturate(190%);backdrop-filter:blur(34px) saturate(190%)}
+html[data-theme=light] .mbox,html[data-theme=light] .dbox{background:var(--g-bg),rgba(255,255,255,.5);border-color:var(--g-bd);box-shadow:var(--g-sh),0 40px 100px rgba(10,100,170,.3)}
+.dmedia{border-radius:32px 0 0 32px;margin:8px;border-radius:24px}
+.mbox{padding:30px}
+.mbox input,.mbox textarea{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:16px;box-shadow:inset 0 1px 3px rgba(0,0,0,.25);color:var(--text)}
+html[data-theme=light] .mbox input,html[data-theme=light] .mbox textarea{background:rgba(255,255,255,.65);border-color:rgba(10,132,214,.22);box-shadow:inset 0 1px 3px rgba(10,100,170,.12)}
+.mbox input:focus,.mbox textarea:focus{border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.13)}
+html[data-theme=light] .mbox input:focus,html[data-theme=light] .mbox textarea:focus{border-color:var(--red);background:#fff}
+.mbox .x,.dbox .x{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.4);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);width:36px;height:36px;border-radius:50%;line-height:1;display:grid;place-items:center;font-size:22px;color:var(--text);right:16px;top:14px}
+html[data-theme=light] .mbox .x,html[data-theme=light] .dbox .x{background:rgba(255,255,255,.7);border-color:#fff;color:#0b1b2b}
+@media (max-width:760px){.dmedia{border-radius:24px;margin:8px 8px 0}.marq{left:8px;right:8px;bottom:8px}nav a,.cb{padding:8px 10px;font-size:10px}.tb{width:34px;height:34px;padding:0}.hr{gap:5px}nav{gap:5px}.helix{top:23%}.stage{perspective-origin:50% 23%}.hero{bottom:88px}}
+
+/* ===== анимация Liquid Glass ===== */
+.blobs{position:fixed;inset:0;overflow:hidden;pointer-events:none}
+.blobs i{position:absolute;border-radius:50%;filter:blur(70px);will-change:transform;opacity:.55}
+.blobs i:nth-child(1){width:46vmax;height:46vmax;left:42%;top:-8%;background:radial-gradient(circle,#2f8cff,transparent 65%);animation:bl1 22s ease-in-out infinite alternate}
+.blobs i:nth-child(2){width:40vmax;height:40vmax;right:-8%;bottom:-14%;background:radial-gradient(circle,#9b5cff,transparent 65%);animation:bl2 27s ease-in-out infinite alternate}
+.blobs i:nth-child(3){width:34vmax;height:34vmax;left:-10%;bottom:-8%;background:radial-gradient(circle,#27d3ff,transparent 65%);animation:bl3 24s ease-in-out infinite alternate}
+@keyframes bl1{to{transform:translate(-16vmax,14vmax) scale(1.2)}}
+@keyframes bl2{to{transform:translate(-20vmax,-12vmax) scale(.85)}}
+@keyframes bl3{to{transform:translate(22vmax,-16vmax) scale(1.25)}}
+html[data-theme=light] .blobs i{opacity:.6}
+html[data-theme=light] .blobs i:nth-child(1){background:radial-gradient(circle,#59b4ff,transparent 65%)}
+html[data-theme=light] .blobs i:nth-child(2){background:radial-gradient(circle,#b9e3ff,transparent 65%)}
+html[data-theme=light] .blobs i:nth-child(3){background:radial-gradient(circle,#ffffff,transparent 65%)}
+/* блик следует за курсором */
+nav a{position:relative}
+.gl::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(circle at var(--px,50%) var(--py,0%),rgba(255,255,255,.34),transparent 58%);opacity:0;transition:opacity .35s}
+.gl:hover::after{opacity:1}
+nav a.gl,.cb.gl{overflow:hidden}
+/* пружинящие нажатия как в iOS */
+nav a,.cb,.cta,.lm button{transition:transform .4s cubic-bezier(.34,1.56,.64,1),filter .25s,background .25s,border-color .25s,box-shadow .25s}
+nav a:hover,.cb:hover{transform:translateY(-2px) scale(1.04)}
+nav a:active,.cb:active,.cta:active{transform:scale(.94)}
+.cta:hover{transform:translateY(-3px) scale(1.03)}
+/* блик-«волна» на главной кнопке */
+.cta{overflow:hidden;position:relative}
+.cta::before{content:"";position:absolute;top:-10%;bottom:-10%;width:55%;left:-90%;background:linear-gradient(100deg,transparent,rgba(130,185,255,.6),transparent);transform:skewX(-20deg);animation:sweep 5s ease-in-out infinite;pointer-events:none}
+html[data-theme=light] .cta::before{background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent)}
+.cta.alt::before{background:linear-gradient(100deg,transparent,rgba(255,255,255,.25),transparent);animation-delay:1.2s}
+@keyframes sweep{0%,55%{left:-90%}100%{left:150%}}
+/* жидкий блик на карточках бежит при вращении колеса */
+.card::before{background:linear-gradient(112deg,transparent calc(var(--sx,50%) - 24%),rgba(255,255,255,.45) var(--sx,50%),transparent calc(var(--sx,50%) + 24%)),radial-gradient(120% 60% at 20% -10%,rgba(255,255,255,.3),transparent 60%);opacity:.85}
+.card.hasm::before{display:block;z-index:1;background:linear-gradient(112deg,transparent calc(var(--sx,50%) - 22%),rgba(255,255,255,.30) var(--sx,50%),transparent calc(var(--sx,50%) + 22%));opacity:.9}
+html[data-theme=light] .card:not(.hasm)::before{background:linear-gradient(112deg,transparent calc(var(--sx,50%) - 24%),rgba(255,255,255,.95) var(--sx,50%),transparent calc(var(--sx,50%) + 24%)),radial-gradient(120% 60% at 20% -10%,rgba(255,255,255,.9),transparent 60%)}
+/* появление окон и меню */
+@keyframes pop{from{opacity:0;transform:scale(.9) translateY(18px)}to{opacity:1;transform:none}}
+.modal.on .mbox,.modal.on .dbox{animation:pop .5s cubic-bezier(.34,1.4,.5,1)}
+.lang.open .lm{animation:pop .32s cubic-bezier(.34,1.5,.5,1);transform-origin:top right}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.hero>*{animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.hero>*:nth-child(2){animation-delay:.08s}.hero>*:nth-child(3){animation-delay:.16s}.hero>*:nth-child(4){animation-delay:.24s}.hero>*:nth-child(5){animation-delay:.32s}
+header{animation:rise .7s cubic-bezier(.2,.8,.2,1) both}
+@media (prefers-reduced-motion:reduce){.blobs i,.cta::before,.hero>*,header{animation:none}}
 </style>
 </head>
 <body>
 <div class="glow"></div>
+<div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
 <header>
   <a class="logo" href="/"><img class="logoimg" src="/logo.png" alt="MD"><span class="sr" id="t-logo">MD</span></a>
   <div class="hr">
@@ -342,14 +447,15 @@ html[data-theme=light] .mbox .x{color:var(--mute)}
 
   var target=0,cur=0,vel=0,drag=false,lastX=0,auto=0.04,modalOpen=false,moved=0;
   function tick(){
+    var now=performance.now();
     if(!drag&&!modalOpen){target+=auto+vel;vel*=0.92;}
     cur+=(target-cur)*0.09;
     helix.style.transform='rotateX(-9deg)';
     for(var i=0;i<N;i++){
       var a=((i*STEP-cur)%360+540)%360-180;
       var o=Math.cos(a*Math.PI/180);o=o>0?Math.pow(o,1.4):0;
-      els[i].style.opacity=o.toFixed(3);els[i].style.pointerEvents=o>0.5?'auto':'none';
-      els[i].style.transform='rotateY('+a.toFixed(2)+'deg) translateZ('+R+'px) translateY('+(-a/STEP*DY).toFixed(1)+'px)';
+      els[i].style.opacity=o.toFixed(3);els[i].style.setProperty('--sx',(50-a*1.15).toFixed(1)+'%');els[i].style.pointerEvents=o>0.5?'auto':'none';
+      els[i].style.transform='rotateY('+a.toFixed(2)+'deg) translateZ('+R+'px) translateY('+(-a/STEP*DY+Math.sin(now*0.0014+i*1.7)*6).toFixed(1)+'px)';
     }
     requestAnimationFrame(tick);
   }
@@ -394,6 +500,15 @@ html[data-theme=light] .mbox .x{color:var(--mute)}
     var t=curCard&&tr(curCard.title);closeD();openM();
     if(t&&!$('o-msg').value)$('o-msg').value=UI_T[LANG].want+t;
   });
+
+  /* блик за курсором */
+  document.querySelectorAll('nav a,.cb,.cta,.lm,.mbox,.dbox').forEach(function(e){e.classList.add('gl')});
+  document.addEventListener('pointermove',function(e){
+    var g=e.target.closest&&e.target.closest('.gl');if(!g)return;
+    var r=g.getBoundingClientRect();
+    g.style.setProperty('--px',((e.clientX-r.left)/r.width*100).toFixed(1)+'%');
+    g.style.setProperty('--py',((e.clientY-r.top)/r.height*100).toFixed(1)+'%');
+  },{passive:true});
 
   /* lang + theme controls */
   var langEl=$('lang');
@@ -1193,6 +1308,7 @@ server {
     }
 
     location / {
+        add_header Cache-Control "no-cache" always;
         add_header X-Content-Type-Options nosniff always;
         add_header X-Frame-Options SAMEORIGIN always;
         add_header Referrer-Policy strict-origin-when-cross-origin always;
