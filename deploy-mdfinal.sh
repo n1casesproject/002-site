@@ -577,8 +577,19 @@ const PORT = +process.env.PORT || 3100;
 const DATA = process.env.DATA_DIR || '/data';
 const APP = __dirname;
 const ENV_PASS = process.env.ADMIN_PASSWORD || '';
-const TG_TOKEN = process.env.TG_BOT_TOKEN || '';
-const TG_CHAT = process.env.TG_CHAT_ID || '';
+const ENV_FILE = process.env.ENV_FILE || '';
+function tgCfg() {
+  let t = process.env.TG_BOT_TOKEN || '', c = process.env.TG_CHAT_ID || '';
+  if (ENV_FILE) {
+    try {
+      fs.readFileSync(ENV_FILE, 'utf8').split('\n').forEach(l => {
+        const m = l.match(/^\s*(TG_BOT_TOKEN|TG_CHAT_ID)\s*=\s*(.*?)\s*$/);
+        if (m && m[2]) { if (m[1] === 'TG_BOT_TOKEN') t = m[2]; else c = m[2]; }
+      });
+    } catch (e) {}
+  }
+  return { t: t.replace(/^["']|["']$/g, ''), c: c.replace(/^["']|["']$/g, '').replace(/[^0-9-]/g, '') };
+}
 const DEV_LANDING = process.env.DEV_LANDING || '';
 fs.mkdirSync(DATA, { recursive: true });
 const UPLOADS = path.join(DATA, 'uploads');
@@ -756,6 +767,7 @@ const ipOf = req => String(req.headers['x-real-ip'] || req.socket.remoteAddress 
 
 /* ---------- telegram ---------- */
 async function tg(text) {
+  const { t: TG_TOKEN, c: TG_CHAT } = tgCfg();
   if (!TG_TOKEN || !TG_CHAT) return { ok: false, error: 'not configured' };
   try {
     const r = await fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
@@ -860,7 +872,7 @@ const server = http.createServer(async (req, res) => {
         writeJSON('auth.json', { salt, hash: hashPass(np, salt) });
         return send(res, 200, { ok: true });
       }
-      if (p === '/dapi/admin/tg' && req.method === 'GET') return send(res, 200, { configured: !!(TG_TOKEN && TG_CHAT) });
+      if (p === '/dapi/admin/tg' && req.method === 'GET') { const k = tgCfg(); return send(res, 200, { configured: !!(k.t && k.c) }); }
       if (p === '/dapi/admin/tg-test' && req.method === 'POST') return send(res, 200, await tg('Проверка связи: админка MD подключена к Telegram.'));
       return send(res, 404, { error: 'not found' });
     }
@@ -1024,7 +1036,7 @@ main{max-width:980px;margin:0 auto;padding:26px clamp(14px,3vw,36px) 120px}
         <p style="margin-bottom:12px">Состояние: <span id="tgst" class="pill no">проверяю…</span></p>
         <button class="btn ghost sm" id="tgtest" type="button">Отправить тестовое сообщение</button>
         <div class="err" id="tgmsg" style="color:var(--mute)"></div>
-        <p class="hint">Токен бота и номер чата задаются на сервере в файле <b>/opt/daler-admin/.env</b> (TG_BOT_TOKEN и TG_CHAT_ID), затем перезапуск: <b>docker restart daler-admin</b>.</p>
+        <p class="hint">Токен бота и номер чата записаны на сервере в файле <b>/opt/md-admin/.env</b> (TG_BOT_TOKEN и TG_CHAT_ID). После изменения файла перезапуск не нужен: статус обновится сам.</p>
       </div>
       <div class="sec">
         <h2>Сменить пароль</h2>
@@ -1218,7 +1230,8 @@ fi
 docker run -d --name md-admin --restart unless-stopped \
   -p 127.0.0.1:3100:3100 \
   --env-file /opt/md-admin/.env \
-  -e DATA_DIR=/data -e HOST=0.0.0.0 \
+  -e DATA_DIR=/data -e HOST=0.0.0.0 -e ENV_FILE=/cfg/.env \
+  -v /opt/md-admin:/cfg:ro \
   -v /opt/md-admin/app:/app:ro \
   -v /opt/md-admin/data:/data \
   node:22-alpine node /app/server.js
@@ -1335,4 +1348,4 @@ if [ "$ADMIN_ON" = "1" ]; then
 else
   echo "Админка отключена: нет HTTPS-сертификата. Исправьте DNS/сертификат и запустите скрипт снова."
 fi
-echo "Заявки в Telegram: впишите TG_BOT_TOKEN и TG_CHAT_ID в /opt/md-admin/.env и выполните: docker restart md-admin"
+echo "Заявки в Telegram: впишите TG_BOT_TOKEN и TG_CHAT_ID в /opt/md-admin/.env (перезапуск не нужен)"
